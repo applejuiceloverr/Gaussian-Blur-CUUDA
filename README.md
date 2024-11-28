@@ -34,18 +34,10 @@ This project implements a **Gaussian Blur** effect on images using CUDA for GPU-
 ### Gaussian Kernel  
 A **Gaussian kernel** is a square matrix calculated from the Gaussian distribution. The kernel values are weights applied to a pixel and its neighbors.  
 
-For each pixel, the new value is calculated as:  
-\[
-\text{New Value} = \frac{\text{Weighted Sum of Pixel and Neighbors}}{\text{Sum of Kernel Weights}}
-\]  
+For each pixel, the new value is calculated
 
 **Edge Handling**: For border pixels where neighbors are missing, the pixel itself is used as a substitute.  
 
-### Example Calculation  
-For a pixel with value `13`, using the kernel:  
-\[
-\text{New Value} = \frac{(1 \cdot 1 + 2 \cdot 4 + 3 \cdot 6 + 4 \cdot 4 + 5 \cdot 1 + 6 \cdot 4 + \dots)}{256}
-\]  
 
 ---
 
