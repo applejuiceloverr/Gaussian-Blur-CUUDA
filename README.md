@@ -49,8 +49,3 @@ For a pixel with value `13`, using the kernel:
 
 ---
 
-## Usage  
-
-1. **Blur Image with Default Kernel**  
-   ```cpp
-   floute("input_image.jpg", "output_image.jpg");
