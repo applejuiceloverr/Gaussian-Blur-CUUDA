@@ -1,42 +1,56 @@
-Gaussian Blur Implementation in CUDA
-Overview
+# Gaussian Blur Implementation in CUDA  
 
-This project implements a Gaussian Blur effect on images using CUDA for parallel processing on a GPU. The goal is to efficiently apply the blur effect by computing a weighted average of pixel values in an image, using a Gaussian kernel.
+## Overview  
 
-At the core of the Gaussian blur is a Gaussian kernel, which is a square matrix derived from a Gaussian distribution. The kernel is used to calculate the new value of each pixel by considering its neighboring pixels and applying a weighted sum.
+This project implements a **Gaussian Blur** effect on images using CUDA for GPU-based parallel processing. The Gaussian blur technique smoothens an image by calculating a weighted average of pixel values based on their neighbors, using a **Gaussian kernel**.  
 
-For edge pixels where neighbors are missing, we substitute the current pixel value. Additionally, the kernel parameters—size and standard deviation (sigma)—can be customized, enabling flexible blurring effects.
-Features
-1. Gaussian Blur Application
+### Features  
 
-    floute(image_source, image_destination)
-    Blurs the image specified by image_source and saves the result to image_destination.
+- **Blurring images using a Gaussian kernel**  
+- **Customizable kernel size and sigma (standard deviation)**  
+- **Edge handling for border pixels**  
+- **Benchmarking with different CUDA thread-block sizes**  
 
-2. Custom Gaussian Blur
+---
 
-    FlouteGaussienCustom(image_source, image_destination, largeur, sigma)
-    Generates a Gaussian kernel with the specified largeur (size) and sigma (standard deviation). The kernel is then applied to the image for custom blurring.
+## Project Structure  
 
-3. Benchmarking
+1. **Gaussian Blur Functionality**  
+   - **`floute(image_source, image_destination)`**:  
+     Blurs the input image (`image_source`) using a default Gaussian kernel and saves the result to the specified output path (`image_destination`).  
 
-    Bench(image_source)
-    Runs a benchmark by applying the blur effect on the specified image using multiple thread-block sizes. Measures the average execution time over 10 runs (excluding the first run) to analyze performance.
+2. **Custom Gaussian Blur**  
+   - **`FlouteGaussienCustom(image_source, image_destination, largeur, sigma)`**:  
+     Generates a custom Gaussian kernel with specified size (`largeur`) and sigma, then applies it to blur the input image.  
 
-How It Works
-Gaussian Kernel
+3. **Benchmarking**  
+   - **`Bench(image_source)`**:  
+     Benchmarks the Gaussian blur operation on the input image using different thread-block sizes. Computes the average execution time over 10 runs (excluding the first).  
 
-A Gaussian kernel is generated based on the size (largeur) and standard deviation (sigma). The kernel values are calculated using the Gaussian formula, ensuring the sum of weights is normalized.
-Blurring Process
+---
 
-For each pixel:
+## How It Works  
 
-    Compute the weighted sum of the pixel and its neighbors using the Gaussian kernel.
-    Normalize the sum to maintain brightness consistency.
+### Gaussian Kernel  
+A **Gaussian kernel** is a square matrix calculated from the Gaussian distribution. The kernel values are weights applied to a pixel and its neighbors.  
 
-Example Calculation:
-For a pixel with value 13:
-New Value=(1⋅1+2⋅4+3⋅6+4⋅4+5⋅1+6⋅4+… )256
-New Value=256(1⋅1+2⋅4+3⋅6+4⋅4+5⋅1+6⋅4+…)​
-Edge Handling
+For each pixel, the new value is calculated as:  
+\[
+\text{New Value} = \frac{\text{Weighted Sum of Pixel and Neighbors}}{\text{Sum of Kernel Weights}}
+\]  
 
-When a neighbor is missing (e.g., at the edges of the image), the current pixel value is used as a substitute to ensure the calculation proceeds smoothly.
+**Edge Handling**: For border pixels where neighbors are missing, the pixel itself is used as a substitute.  
+
+### Example Calculation  
+For a pixel with value `13`, using the kernel:  
+\[
+\text{New Value} = \frac{(1 \cdot 1 + 2 \cdot 4 + 3 \cdot 6 + 4 \cdot 4 + 5 \cdot 1 + 6 \cdot 4 + \dots)}{256}
+\]  
+
+---
+
+## Usage  
+
+1. **Blur Image with Default Kernel**  
+   ```cpp
+   floute("input_image.jpg", "output_image.jpg");
